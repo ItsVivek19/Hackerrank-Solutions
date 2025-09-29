@@ -1,0 +1,92 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+
+using namespace std;
+
+/**
+ * Finds the 1-based indices of the two distinct flavors that sum up to the target money 'm'.
+ * * This solution uses a hash map to store the cost encountered and its 1-based index,
+ * allowing for O(1) average time lookups for the required complement.
+ * * Time Complexity: O(n) - Single pass through the cost array.
+ * Space Complexity: O(n) - For the unordered_map.
+ * * @param m The target total money to spend.
+ * @param cost The list of flavor costs.
+ * @return A vector of two integers representing the 1-based indices, sorted ascending.
+ */
+vector<int> icecreamParlor(int m, const vector<int>& cost) {
+    // Map to store: (flavor cost) -> (1-based index)
+    // Example: { 1: 1, 4: 2, 5: 3, ... }
+    unordered_map<int, int> cost_to_index;
+    
+    // Iterate through the flavors. 'i' is the 0-based index.
+    for (int i = 0; i < cost.size(); ++i) {
+        int current_cost = cost[i];
+        
+        // Calculate the complement cost needed to reach the target 'm'
+        int complement = m - current_cost;
+        
+        // Check if the required complement is already in the map
+        if (cost_to_index.count(complement)) {
+            // Found the pair!
+            
+            // index1: The 1-based index of the complement flavor (already stored)
+            int index1 = cost_to_index[complement];
+            
+            // index2: The 1-based index of the current flavor
+            // Since we iterate sequentially, index1 will always be less than index2,
+            // which satisfies the requirement to return indices sorted ascending.
+            int index2 = i + 1; 
+            
+            return {index1, index2};
+        }
+        
+        // If the complement is not found, store the current cost and its 1-based index (i + 1)
+        // in the map for future lookups.
+        cost_to_index[current_cost] = i + 1;
+    }
+    
+    // Based on the constraints, this part should not be reached 
+    // ("There will always be a unique solution.")
+    return {};
+}
+
+/**
+ * Main function to handle input reading for multiple test cases (trips).
+ */
+int main() {
+    // Optimization for faster input/output operations
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int t; // Number of trips
+    // Read the number of trips
+    if (!(cin >> t)) return 0;
+
+    // Loop through each trip
+    while (t--) {
+        int m; // Money they have pooled
+        int n; // Number of flavors offered (size of cost array)
+        
+        // Read money and number of flavors
+        if (!(cin >> m)) return 0;
+        if (!(cin >> n)) return 0;
+
+        vector<int> cost(n);
+        // Read the cost of each flavor
+        for (int i = 0; i < n; ++i) {
+            if (!(cin >> cost[i])) return 0;
+        }
+
+        // Call the core function to find the indices
+        vector<int> result = icecreamParlor(m, cost);
+
+        // Print the result (1-based indices, space-separated)
+        if (result.size() == 2) {
+            cout << result[0] << " " << result[1] << "\n";
+        }
+    }
+
+    return 0;
+}
