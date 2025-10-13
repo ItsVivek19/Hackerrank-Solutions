@@ -1,0 +1,106 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+// Function to remove spaces from the input string
+void removeSpaces(char *source, char *dest) {
+    while (*source != '\0') {
+        if (*source != ' ') {
+            *dest = *source;
+            dest++;
+        }
+        source++;
+    }
+    *dest = '\0';
+}
+
+void encryption(char *s) {
+    char* encryption(char* s) {
+    int len = 0;
+
+    for (int i = 0; s[i]; i++) {
+        if (s[i] != ' ') {
+            s[len++] = s[i];
+        }
+    }
+    s[len] = '\0';
+
+    double sqrt_len = sqrt(len);
+    int rows = (int)floor(sqrt_len);
+    int cols = (int)ceil(sqrt_len);
+    if (rows * cols < len) {
+        rows++;
+    }
+    
+    int result_size = len + cols + 1;  // len + spaces + null
+    char* result = malloc(result_size);
+    int pos = 0;
+
+    for (int c = 0; c < cols; c++) {
+        for (int r = 0; r < rows; r++) {
+            int idx = r * cols + c;
+            if (idx < len) {
+                result[pos++] = s[idx];
+            }
+        }
+        result[pos++] = ' ';
+    }
+
+    if (pos > 0 && result[pos - 1] == ' ') {
+        pos--;
+    }
+    result[pos] = '\0';
+
+    return result;
+}
+    // Remove spaces first
+    int len = strlen(s);
+    char *cleaned = (char *)malloc((len + 1) * sizeof(char));
+    removeSpaces(s, cleaned);
+    int L = strlen(cleaned);
+
+    // Calculate floor and ceil of sqrt(L)
+    int floor_sqrt = (int)floor(sqrt(L));
+    int ceil_sqrt = (int)ceil(sqrt(L));
+
+    int rows = 0, cols = 0;
+    int min_area = 1000000;  // large number for initialization
+
+    // Find grid dimensions
+    for (int r = floor_sqrt; r <= ceil_sqrt; r++) {
+        for (int c = r; c <= ceil_sqrt; c++) { // cols >= rows
+            if (r * c >= L && r * c < min_area) {
+                rows = r;
+                cols = c;
+                min_area = r * c;
+            }
+        }
+    }
+
+    // Print the encrypted message column-wise
+    for (int c = 0; c < cols; c++) {
+        for (int r = 0; r < rows; r++) {
+            int idx = r * cols + c;
+            if (idx < L) {
+                printf("%c", cleaned[idx]);
+            }
+        }
+        if (c != cols - 1) printf(" ");
+    }
+    printf("\n");
+
+    free(cleaned);
+}
+
+int main() {
+    char input[1001];
+    // Read input line (up to 1000 chars)
+    fgets(input, sizeof(input), stdin);
+    // Remove trailing newline if any
+    input[strcspn(input, "\n")] = '\0';
+
+    encryption(input);
+
+    return 0;
+}
