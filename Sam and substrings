@@ -1,0 +1,24 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+const int MOD = 1000000007;
+
+int substrings(string n) {
+    int len = n.length();
+    long long total = 0;
+    long long prev = 0;
+    for (int i = 0; i < len; ++i) {
+        int digit = n[i] - '0';
+        prev = (prev * 10 + digit * (i + 1)) % MOD;
+        total = (total + prev) % MOD;
+    }
+    return total;
+}
+
+int main() {
+    string n;
+    cin >> n;
+    cout << substrings(n) << endl;
+    return 0;
+}
