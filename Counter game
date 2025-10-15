@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+string counterGame(unsigned long long n) {
+    bool louiseTurn = true;
+    while (n != 1) {
+        if ((n & (n - 1)) == 0) {
+            // n is a power of two, divide by 2
+            n >>= 1;
+        } else {
+            // subtract largest power of 2 less than n
+            unsigned long long p = 1ULL << (63 - __builtin_clzll(n));
+            n -= p;
+        }
+        louiseTurn = !louiseTurn;
+    }
+    return louiseTurn ? "Richard" : "Louise";
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int t; 
+    cin >> t;
+    while (t--) {
+        unsigned long long n;
+        cin >> n;
+        cout << counterGame(n) << "\n";
+    }
+    return 0;
+}
