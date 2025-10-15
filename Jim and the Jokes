@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+// Converts num from base 'base' to decimal. Returns -1 if any digit is invalid for the base.
+long long convertToDecimal(long long num, int base) {
+    long long result = 0;
+    long long multiplier = 1;
+    while (num > 0) {
+        int digit = num % 10;
+        if (digit >= base) return -1; // Invalid for this base
+        result += digit * multiplier;
+        multiplier *= base;
+        num /= 10;
+    }
+    return result;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    unordered_map<long long, long long> freq;
+    for (int i = 0; i < n; ++i) {
+        int month, day;
+        cin >> month >> day;
+        if (month <= 1) continue; // skip invalid base
+        long long dec = convertToDecimal(day, month);
+        if (dec != -1) freq[dec]++;
+    }
+    long long count = 0;
+    for (const auto& kv : freq) {
+        long long f = kv.second;
+        if (f > 1) count += f * (f - 1) / 2;
+    }
+    cout << count << endl;
+    return 0;
+}
