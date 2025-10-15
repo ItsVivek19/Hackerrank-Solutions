@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int T;
+    cin >> T;
+
+    while (T--) {
+        double a;
+        long long b, x;
+        cin >> a >> b >> x;
+
+        double val;
+        if (b >= 0)
+            val = pow(a, b);
+        else
+            val = 1.0 / pow(a, -b);
+
+        // Closest multiples of x
+        long long lower = floor(val / x) * x;
+        long long upper = ceil(val / x) * x;
+
+        // Compare distances
+        double diffLower = fabs(val - lower);
+        double diffUpper = fabs(val - upper);
+
+        long long ans;
+        if (diffLower < diffUpper)
+            ans = lower;
+        else if (diffUpper < diffLower)
+            ans = upper;
+        else
+            ans = min(lower, upper); // if equal, pick smaller
+
+        cout << ans << "\n";
+    }
+
+    return 0;
+}
