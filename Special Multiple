@@ -1,0 +1,47 @@
+#include <iostream>
+#include <queue>
+#include <string>
+#include <unordered_set>
+using namespace std;
+
+string specialMultiple(int N) {
+    if (N == 0) return "0";
+    queue<pair<string, int>> q;
+    unordered_set<int> visited;
+
+    q.push({"9", 9 % N});
+    visited.insert(9 % N);
+
+    while (!q.empty()) {
+        string s = q.front().first;
+        int mod = q.front().second;
+        q.pop();
+
+        if (mod == 0) return s;
+
+        int mod0 = (mod * 10) % N;
+        if (visited.find(mod0) == visited.end()) {
+            q.push({s + "0", mod0});
+            visited.insert(mod0);
+        }
+
+        int mod9 = (mod * 10 + 9) % N;
+        if (visited.find(mod9) == visited.end()) {
+            q.push({s + "9", mod9});
+            visited.insert(mod9);
+        }
+    }
+    return ""; // Should never reach here
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int T; cin >> T;
+    while (T--) {
+        int N; cin >> N;
+        cout << specialMultiple(N) << "\n";
+    }
+    return 0;
+}
