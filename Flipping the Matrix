@@ -1,0 +1,36 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int flippingMatrix(vector<vector<int>>& matrix) {
+    int n = matrix.size() / 2;
+    int maxSum = 0;
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            int topLeft = matrix[i][j];
+            int topRight = matrix[i][2 * n - j - 1];
+            int bottomLeft = matrix[2 * n - i - 1][j];
+            int bottomRight = matrix[2 * n - i - 1][2 * n - j - 1];
+            maxSum += max({topLeft, topRight, bottomLeft, bottomRight});
+        }
+    }
+    return maxSum;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int q, n;
+    cin >> q;
+    while (q--) {
+        cin >> n;
+        vector<vector<int>> matrix(2 * n, vector<int>(2 * n));
+        for (int i = 0; i < 2 * n; ++i) {
+            for (int j = 0; j < 2 * n; ++j) {
+                cin >> matrix[i][j];
+            }
+        }
+        cout << flippingMatrix(matrix) << "\n";
+    }
+    return 0;
+}
