@@ -1,0 +1,41 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int pylons(int k, vector<int> arr) {
+    int n = arr.size();
+    int i = 0;
+    int plants = 0;
+
+    while (i < n) {
+        // Find the farthest place to the right (within range) to place a plant
+        int pos = min(i + k - 1, n - 1);
+
+        // Move left to find a suitable location for a power plant
+        while (pos >= i - (k - 1) && pos >= 0 && arr[pos] == 0) {
+            pos--;
+        }
+
+        // If no valid position found, not possible
+        if (pos < i - (k - 1) || pos < 0)
+            return -1;
+
+        // Place a plant here
+        plants++;
+
+        // Move to the next uncovered city
+        i = pos + k;
+    }
+
+    return plants;
+}
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+    vector<int> arr(n);
+    for (int i = 0; i < n; i++)
+        cin >> arr[i];
+
+    cout << pylons(k, arr) << endl;
+    return 0;
+}
