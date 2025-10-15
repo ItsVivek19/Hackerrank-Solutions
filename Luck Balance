@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int luckBalance(int k, vector<vector<int>> contests) {
+    priority_queue<int> importantContests;
+    int maxLuck = 0;
+
+    for (auto& contest : contests) {
+        int luck = contest[0];
+        int importance = contest[1];
+        if (importance == 1) {
+            importantContests.push(luck);
+        } else {
+            maxLuck += luck;  // lose all unimportant contests
+        }
+    }
+
+    // Lose up to k important contests with the highest luck
+    while (!importantContests.empty() && k > 0) {
+        maxLuck += importantContests.top();
+        importantContests.pop();
+        k--;
+    }
+
+    // Win remaining important contests and subtract their luck
+    while (!importantContests.empty()) {
+        maxLuck -= importantContests.top();
+        importantContests.pop();
+    }
+
+    return maxLuck;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, k;
+    cin >> n >> k;
+    vector<vector<int>> contests(n, vector<int>(2));
+    for (int i = 0; i < n; i++) {
+        cin >> contests[i][0] >> contests[i][1];
+    }
+    cout << luckBalance(k, contests) << "\n";
+
+    return 0;
+}
