@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+long long winningLotteryTicket(vector<string> tickets) {
+    int n = tickets.size();
+    vector<int> mask(n, 0);
+
+    for (int i = 0; i < n; i++) {
+        for (char c : tickets[i]) {
+            mask[i] |= (1 << (c - '0'));
+        }
+    }
+
+    long long count = 0;
+
+    unordered_map<int, long long> freq;
+    for (int m : mask)
+        freq[m]++;
+
+    vector<pair<int, long long>> masks(freq.begin(), freq.end());
+
+    for (int i = 0; i < masks.size(); i++) {
+        for (int j = i; j < masks.size(); j++) {
+            if ((masks[i].first | masks[j].first) == 1023) { // 1023 = 1111111111b (all digits)
+                if (i == j)
+                    count += (masks[i].second * (masks[i].second - 1)) / 2;
+                else
+                    count += masks[i].second * masks[j].second;
+            }
+        }
+    }
+
+    return count;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<string> tickets(n);
+    for (int i = 0; i < n; i++) {
+        cin >> tickets[i];
+    }
+
+    cout << winningLotteryTicket(tickets) << endl;
+    return 0;
+}
