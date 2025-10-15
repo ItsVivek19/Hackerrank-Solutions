@@ -1,0 +1,20 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    long long r, c;
+    if (!(cin >> r >> c)) return 0;
+
+    // compute the base for the pair of rows containing row r
+    long long base = ((r - 1) / 2) * 10LL;
+    // if r is even -> row contains odd numbers starting at base+1
+    // if r is odd  -> row contains even numbers starting at base
+    long long start = (r % 2 == 0) ? (base + 1) : base;
+    long long ans = start + (c - 1) * 2LL;
+
+    cout << ans << '\n';
+    return 0;
+}
