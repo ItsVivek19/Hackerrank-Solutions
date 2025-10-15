@@ -1,0 +1,40 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void kaprekarNumbers(long p, long q) {
+    vector<long> result;
+
+    for (long i = p; i <= q; i++) {
+        long long sq = (long long)i * i;
+        string s = to_string(sq);
+        int d = to_string(i).length();
+
+        string right = s.substr(s.size() - d, d);
+        string left = s.substr(0, s.size() - d);
+
+        long long l = (left.empty()) ? 0 : stoll(left);
+        long long r = (right.empty()) ? 0 : stoll(right);
+
+        if (l + r == i)
+            result.push_back(i);
+    }
+
+    if (result.empty()) {
+        cout << "INVALID RANGE";
+    } else {
+        for (int i = 0; i < result.size(); i++) {
+            cout << result[i];
+            if (i != result.size() - 1)
+                cout << " ";
+        }
+    }
+    cout << endl;
+}
+
+int main() {
+    long p, q;
+    cin >> p >> q;
+
+    kaprekarNumbers(p, q);
+    return 0;
+}
