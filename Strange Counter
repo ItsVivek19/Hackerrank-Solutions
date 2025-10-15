@@ -1,0 +1,27 @@
+#include <iostream>
+using namespace std;
+
+long strangeCounter(long t) {
+    long cycle_start = 1;
+    long cycle_length = 3;
+    
+    // Find the cycle where time t falls
+    while (cycle_start + cycle_length <= t) {
+        cycle_start += cycle_length;
+        cycle_length *= 2;
+    }
+    
+    // Value displayed at time t is cycle_length - (t - cycle_start)
+    return cycle_length - (t - cycle_start);
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    long t;
+    cin >> t;
+    cout << strangeCounter(t) << "\n";
+
+    return 0;
+}
