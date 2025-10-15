@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int downToZero(int n) {
+    queue<int> q;
+    vector<int> dp(n + 1, 0);
+    q.push(n);
+
+    while (!q.empty()) {
+        int curr = q.front();
+        q.pop();
+
+        if (curr == 0) {
+            return dp[0];
+        }
+
+        // Option 1: decrement by 1
+        if (curr - 1 >= 0 && dp[curr - 1] == 0) {
+            dp[curr - 1] = dp[curr] + 1;
+            q.push(curr - 1);
+        }
+
+        // Option 2: replace with max factor (other than 1)
+        for (int i = (int) sqrt(curr); i >= 2; i--) {
+            if (curr % i == 0) {
+                int next = max(i, curr / i);
+                if (dp[next] == 0) {
+                    dp[next] = dp[curr] + 1;
+                    q.push(next);
+                }
+            }
+        }
+    }
+    return dp[0];
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int Q; 
+    cin >> Q;
+    while (Q--) {
+        int n; 
+        cin >> n;
+        cout << downToZero(n) << "\n";
+    }
+    return 0;
+}
