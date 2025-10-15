@@ -1,0 +1,53 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// Check if position (x, y) is within the chessboard bounds
+bool isValid(int n, int x, int y) {
+    return x > 0 && x <= n && y > 0 && y <= n;
+}
+
+// Counts how many cells the queen can attack in direction (dx, dy)
+int countMoves(int n, int x, int y, int dx, int dy, const unordered_set<long long>& obstacles) {
+    int count = 0;
+    x += dx;
+    y += dy;
+    while (isValid(n, x, y) && obstacles.find((long long)x * n + y) == obstacles.end()) {
+        count++;
+        x += dx;
+        y += dy;
+    }
+    return count;
+}
+
+int queensAttack(int n, int k, int r_q, int c_q, vector<vector<int>> obstacles) {
+    // Use a hash set to store obstacles for O(1) lookup; encode (x,y) as x*n + y
+    unordered_set<long long> obstacleSet;
+    for (auto& obs : obstacles) {
+        obstacleSet.insert((long long)obs[0] * n + obs[1]);
+    }
+
+    // Directions: up, down, left, right, and 4 diagonals
+    vector<pair<int,int>> directions = {
+        {1,0}, {-1,0}, {0,1}, {0,-1},
+        {1,1}, {1,-1}, {-1,1}, {-1,-1}
+    };
+
+    int totalMoves = 0;
+    for (auto& dir : directions) {
+        totalMoves += countMoves(n, r_q, c_q, dir.first, dir.second, obstacleSet);
+    }
+    return totalMoves;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int n, k, r_q, c_q;
+    cin >> n >> k >> r_q >> c_q;
+    vector<vector<int>> obstacles(k, vector<int>(2));
+    for (int i = 0; i < k; ++i) {
+        cin >> obstacles[i][0] >> obstacles[i][1];
+    }
+    cout << queensAttack(n, k, r_q, c_q, obstacles) << "\n";
+    return 0;
+}
