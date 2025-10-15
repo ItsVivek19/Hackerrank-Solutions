@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int truckTour(const vector<pair<int, int>>& petrolPumps) {
+    int n = petrolPumps.size();
+    int start = 0;
+    int surplus = 0;
+    int deficit = 0;
+    int balance = 0;
+
+    for (int i = 0; i < n; ++i) {
+        balance += petrolPumps[i].first - petrolPumps[i].second;
+        if (balance < 0) {
+            start = i + 1;
+            deficit += balance;
+            balance = 0;
+        }
+    }
+
+    return (balance + deficit >= 0) ? start : -1;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+    vector<pair<int, int>> petrolPumps(n);
+    for (int i = 0; i < n; ++i) {
+        cin >> petrolPumps[i].first >> petrolPumps[i].second;
+    }
+
+    cout << truckTour(petrolPumps) << "\n";
+
+    return 0;
+}
