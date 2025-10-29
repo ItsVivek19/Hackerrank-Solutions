@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 1000
+
+// Function to check if the pattern exists in the grid
+char* gridSearch(char G[][MAX], int R, int C, char P[][MAX], int r, int c) {
+    for (int i = 0; i <= R - r; i++) {
+        for (int j = 0; j <= C - c; j++) {
+            int found = 1;
+
+            // Check if pattern P matches starting at G[i][j]
+            for (int x = 0; x < r && found; x++) {
+                for (int y = 0; y < c; y++) {
+                    if (G[i + x][j + y] != P[x][y]) {
+                        found = 0;
+                        break;
+                    }
+                }
+            }
+
+            if (found)
+                return "YES";
+        }
+    }
+
+    return "NO";
+}
+
+int main() {
+    int T;
+    scanf("%d", &T);
+
+    while (T--) {
+        int R, C, r, c;
+        char G[MAX][MAX], P[MAX][MAX];
+
+        // Read grid size and grid
+        scanf("%d %d", &R, &C);
+        for (int i = 0; i < R; i++)
+            scanf("%s", G[i]);
+
+        // Read pattern size and pattern
+        scanf("%d %d", &r, &c);
+        for (int i = 0; i < r; i++)
+            scanf("%s", P[i]);
+
+        // Check and print result
+        printf("%s\n", gridSearch(G, R, C, P, r, c));
+    }
+
+    return 0;
+}
