@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Function to compare integers (used for qsort)
+int compare(const void *a, const void *b) {
+    return (*(int*)a - *(int*)b);
+}
+
+// Function to count pairs with difference k
+int pairs(int k, int arr[], int n) {
+    int count = 0;
+    int i = 0, j = 1;
+
+    // Sort the array
+    qsort(arr, n, sizeof(int), compare);
+
+    // Two-pointer approach
+    while (i < n && j < n) {
+        int diff = arr[j] - arr[i];
+        if (diff == k) {
+            count++;
+            i++;
+            j++;
+        } else if (diff < k) {
+            j++;
+        } else {
+            i++;
+        }
+    }
+
+    return count;
+}
+
+int main() {
+    int n, k;
+    scanf("%d %d", &n, &k);
+    int arr[n];
+
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    int result = pairs(k, arr, n);
+    printf("%d\n", result);
+
+    return 0;
+}
