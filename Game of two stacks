@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int twoStacks(int maxSum, vector<int> a, vector<int> b) {
+    int sum = 0, count = 0, j = 0, result = 0;
+
+    // First, take as many as possible from stack A
+    while (j < (int)a.size() && sum + a[j] <= maxSum) {
+        sum += a[j];
+        j++;
+    }
+    result = j;
+
+    // Now try taking from stack B and removing from A when needed
+    int i = 0;
+    for (int k = 0; k < (int)b.size(); k++) {
+        sum += b[k];
+
+        while (sum > maxSum && j > 0) {
+            j--;
+            sum -= a[j];
+        }
+
+        if (sum <= maxSum)
+            result = max(result, j + k + 1);
+    }
+
+    return result;
+}
+
+int main() {
+    int g; // number of games
+    cin >> g;
+    while (g--) {
+        int n, m, maxSum;
+        cin >> n >> m >> maxSum;
+
+        vector<int> a(n), b(m);
+        for (int i = 0; i < n; i++)
+            cin >> a[i];
+        for (int i = 0; i < m; i++)
+            cin >> b[i];
+
+        cout << twoStacks(maxSum, a, b) << endl;
+    }
+    return 0;
+}
