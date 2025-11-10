@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+long long countSubsequences(vector<int>& arr, int k) {
+    vector<long long> freq(k, 0); // frequency of prefix sum remainders
+    long long prefixSum = 0, count = 0;
+
+    freq[0] = 1; // for subarrays starting from index 0
+
+    for (int num : arr) {
+        prefixSum = (prefixSum + num) % k;
+        if (prefixSum < 0) prefixSum += k; // handle negative remainders
+
+        count += freq[prefixSum]; // subsequences ending here with divisible sum
+        freq[prefixSum]++;
+    }
+
+    return count;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int T;
+    cin >> T;
+
+    while (T--) {
+        int n, k;
+        cin >> n >> k;
+        vector<int> arr(n);
+        for (int i = 0; i < n; i++)
+            cin >> arr[i];
+
+        cout << countSubsequences(arr, k) << "\n";
+    }
+
+    return 0;
+}
